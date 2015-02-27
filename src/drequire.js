@@ -15,6 +15,9 @@ var drequire = function (module_name) {
     case 'mathematics':  return drequire('maths');
     case 'math':         return drequire('maths');
 
+    // MODULE: agent
+    case 'agent':        return require('./lib/agent/index');
+
     // MODULE: (not found)
     default:               return undefined;
   }

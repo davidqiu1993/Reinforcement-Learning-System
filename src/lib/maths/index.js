@@ -30,11 +30,8 @@ maths.make_max = function (operands, operator) {
   // Check the parameters
   var paramCheck = true;
   if (!( typeof(operands) == 'array' || operands instanceof Array )) paramCheck = false;
-  else if (!( operands.length > 0 )) paramCheck = false;
   else {
-    operands.forEach(function (item) {
-      if (!( typeof(item) == 'number' || item instanceof Number )) paramCheck = false;
-    });
+    if (!( operands.length > 0 )) paramCheck = false;
   }
   if (!( typeof(operator) == 'function' || operator instanceof Function )) paramCheck = false;
   if (!paramCheck) {
@@ -86,11 +83,8 @@ maths.sum = function (operands, operator) {
   // Check the parameters
   var paramCheck = true;
   if (!( typeof(operands) == 'array' || operands instanceof Array )) paramCheck = false;
-  else if (!( operands.length >= 0 )) paramCheck = false;
   else {
-    operands.forEach(function (item) {
-      if (!( typeof(item) == 'number' || item instanceof Number )) paramCheck = false;
-    });
+    if (!( operands.length >= 0 )) paramCheck = false;
   }
   if (!( typeof(operator) == 'function' || operator instanceof Function )) paramCheck = false;
   if (!paramCheck) {
