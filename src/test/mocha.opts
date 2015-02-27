@@ -1,0 +1,3 @@
+--recursive
+--require test/_init.js
+--globals drequire

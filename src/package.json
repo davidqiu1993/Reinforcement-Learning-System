@@ -1,0 +1,21 @@
+{
+  "name": "Reinforcement-Learning-System",
+  "version": "0.0.1",
+  "description": "General reinforcement learning system with artificial intelligence agent and \r environment simulator.",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.oschina.net/davidqiu/Reinforcement-Learning-System.git"
+  },
+  "author": "David Qiu",
+  "devDependencies": {
+    "mocha": "^2.1.0",
+    "should": "^5.0.1"
+  }
+}
