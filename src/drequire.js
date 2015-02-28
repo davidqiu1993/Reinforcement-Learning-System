@@ -15,6 +15,9 @@ var drequire = function (module_name) {
     case 'mathematics':  return drequire('maths');
     case 'math':         return drequire('maths');
 
+    // MODULE: algorithms
+    case 'algorithms':   return require('./lib/algorithms/index');
+
     // MODULE: agent
     case 'agent':        return require('./lib/agent/index');
 

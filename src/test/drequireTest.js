@@ -18,6 +18,16 @@ describe('drequire', function() {
     drequire('math').should.be.ok;
   });
 
+  // TEST: Existence of algorithms module
+  it('should have algorithms module', function () {
+    drequire('algorithms').should.be.ok;
+  });
+
+  // TEST: Existence of agent module
+  it('should have agent module', function () {
+    drequire('agent').should.be.ok;
+  });
+
   // TEST: Existence of inexistent modules
   it('should not have any inexistent module', function() {
     (drequire('inexistentModuleA') === undefined).should.be.true;

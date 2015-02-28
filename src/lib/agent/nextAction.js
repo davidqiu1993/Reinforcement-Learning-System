@@ -48,7 +48,7 @@ nextAction = function (
   // Knowledge
   var P = $probabilities; // transition probability from one state to another with an action, p = P[s][a][s2].value, n = P[s][a][s2].count
   var R = $rewards; // reward function results of the states, r = R[s].value, n = R[s].count
-  var V = $values; // value function results of the states, v = V[s]
+  var V = $values; // value function results of the states, v = V[s].value
 
   // Observation
   var s_prev = previous_state; // state of previous round
@@ -77,22 +77,22 @@ nextAction = function (
       // Compute the next value of the state
       var next_v = R[s] + g * maths.make_max(A, function (a) {
         return maths.sum(S, function (s2) {
-          return (P[s][a][s2].value * V[s2]);
+          return (P[s][a][s2].value * V[s2].value);
         }).value;
       }).value;
 
       // Check the maximum error
-      max_error = maths.max([ max_error, maths.abs(next_v - V[s]).value ]).value;
+      max_error = maths.max([ max_error, maths.abs(next_v - V[s].value).value ]).value;
 
       // Update the value of the state
-      V[s] = next_v;
+      V[s].value = next_v;
     });
   }
 
   // Find the next action with the optimal policy
   var a_cur = maths.make_max(A, function (a) {
     return maths.sum(S, function (s2) {
-      return (P[s_cur][a][s2].value * V[s2]);
+      return (P[s_cur][a][s2].value * V[s2].value);
     }).value;
   }).operand;
 
