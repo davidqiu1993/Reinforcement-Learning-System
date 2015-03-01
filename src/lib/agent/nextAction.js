@@ -77,11 +77,12 @@ nextAction = function (
     max_error = 0;
     for (var i=0; i<S.length; ++i) {
       // Compute the next value of the state
-      var next_v = R[S[i]] + g * maths.make_max(A, function (a) {
+      var bellman_rest = maths.make_max(A, function (a) {
         return maths.sum(S, function (s2) {
-          return (P[S[i]][a][s2].value * V[s2].value);
+          return P[S[i]][a][s2].value * V[s2].value;
         }).value;
       }).value;
+      var next_v = R[S[i]].value + g * bellman_rest;
 
       // Check the maximum error
       max_error = maths.max([ max_error, maths.abs(next_v - V[S[i]].value).value ]).value;

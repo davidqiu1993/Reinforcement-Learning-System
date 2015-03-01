@@ -45,24 +45,24 @@ maths.make_max = function (operands, operator) {
   var max_value = undefined;
 
   // Find the maximum value and corresponding operand
-  operands.forEach(function (operand) {
+  for (var i=0; i<operands.length; ++i) {
     // Check if it is the initial round
     if (selected_operand === undefined) {
       // Initialize the selected operand and maximum value
-      selected_operand = operand;
-      max_value = operator(operand);
+      selected_operand = operands[i];
+      max_value = operator(operands[i]);
     } else {
       // Calculate the current value
-      var cur_value = operator(operand);
+      var cur_value = operator(operands[i]);
 
       // Check if it is the maximum value
       if (cur_value > max_value) {
         // Update the maximum value and selected operand
         max_value = cur_value;
-        selected_operand = operand;
+        selected_operand = operands[i];
       }
     }
-  });
+  }
 
   // Return the maximum value and corresponding operand
   return { value: max_value, operand: selected_operand };
@@ -97,9 +97,9 @@ maths.sum = function (operands, operator) {
   var sum_value = 0;
 
   // Calculate the sum value
-  operands.forEach(function (operand) {
-    sum_value += operator(operand);
-  });
+  for (var i=0; i<operands.length; ++i) {
+    sum_value += operator(operands[i]);
+  }
 
   // Return the sum value
   return { value: sum_value };
@@ -119,9 +119,9 @@ maths.max = function (operands) {
   if (!( typeof(operands) == 'array' || operands instanceof Array )) paramCheck = false;
   else if (!( operands.length > 0 )) paramCheck = false;
   else {
-    operands.forEach(function (item) {
-      if (!( typeof(item) == 'number' || item instanceof Number )) paramCheck = false;
-    });
+    for (var i=0; i<operands.length; ++i) {
+      if (!( typeof(operands[i]) == 'number' || operands[i] instanceof Number )) paramCheck = false;
+    }
   }
   if (!paramCheck) {
     var err = new Error('Some of the parameters are invalid.');
@@ -133,16 +133,16 @@ maths.max = function (operands) {
   var max_value = undefined;
 
   // Find the maximum value
-  operands.forEach(function (operand) {
+  for (var i=0; i<operands.length; ++i) {
     // Check if it is the initial round
     if (max_value === undefined) {
       // Initialize the maximum value
-      max_value = operand;
+      max_value = operands[i];
     } else {
       // Check the maximum value
-      if (operand > max_value) max_value = operand;
+      if (operands[i] > max_value) max_value = operands[i];
     }
-  });
+  }
 
   // Return the maximum value
   return { value: max_value };
@@ -162,9 +162,9 @@ maths.min = function (operands) {
   if (!( typeof(operands) == 'array' || operands instanceof Array )) paramCheck = false;
   else if (!( operands.length > 0 )) paramCheck = false;
   else {
-    operands.forEach(function (item) {
-      if (!( typeof(item) == 'number' || item instanceof Number )) paramCheck = false;
-    });
+    for (var i=0; i<operands.length; ++i) {
+      if (!( typeof(operands[i]) == 'number' || operands[i] instanceof Number )) paramCheck = false;
+    }
   }
   if (!paramCheck) {
     var err = new Error('Some of the parameters are invalid.');
@@ -176,16 +176,16 @@ maths.min = function (operands) {
   var min_value = undefined;
 
   // Find the minimum value
-  operands.forEach(function (operand) {
+  for (var i=0; i<operands.length; ++i) {
     // Check if it is the initial round
     if (min_value === undefined) {
       // Initialize the minimum value
-      min_value = operand;
+      min_value = operands[i];
     } else {
       // Check the minimum value
-      if (operand < min_value) min_value = operand;
+      if (operands[i] < min_value) min_value = operands[i];
     }
-  });
+  }
 
   // Return the minimum value
   return { value: min_value };
