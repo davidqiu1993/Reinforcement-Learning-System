@@ -18,8 +18,9 @@ var drequire = function (module_name) {
     // MODULE: algorithms
     case 'algorithms':   return require('./lib/algorithms/index');
 
-    // MODULE: agent
-    case 'agent':        return require('./lib/agent/index');
+    // MODULE: Agent
+    case 'Agent':        return require('./lib/agent/index');
+    case 'agent':        return drequire('Agent');
 
     // MODULE: (not found)
     default:               return undefined;

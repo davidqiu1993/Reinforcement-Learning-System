@@ -30,22 +30,22 @@ var Agent = function (actions, states, discount_rate, acceptable_error) {
   if (!( typeof(actions) == 'array' || actions instanceof Array )) paramCheck = false;
   else {
     if (!( actions.length > 0 )) paramCheck = false;
-    actions.forEach(function (item) {
-      if (!( typeof(item) == 'string' || item instanceof String ||
-             typeof(item) == 'number' || item instanceof Number )) {
+    for (var i=0; i<actions.length; ++i) {
+      if (!( typeof(actions[i]) == 'string' || actions[i] instanceof String ||
+             typeof(actions[i]) == 'number' || actions[i] instanceof Number )) {
         paramCheck = false;
       }
-    });
+    }
   }
   if (!( typeof(states) == 'array' || states instanceof Array )) paramCheck = false;
   else {
     if (!( states.length > 0 )) paramCheck = false;
-    states.forEach(function (item) {
-      if (!( typeof(item) == 'string' || item instanceof String ||
-             typeof(item) == 'number' || item instanceof Number )) {
+    for(var i=0; i<states.length; ++i) {
+      if (!( typeof(states[i]) == 'string' || states[i] instanceof String ||
+             typeof(states[i]) == 'number' || states[i] instanceof Number )) {
         paramCheck = false;
       }
-    });
+    }
   }
   if (!( typeof(discount_rate) == 'number' || discount_rate instanceof Number )) paramCheck = false;
   else {
@@ -77,35 +77,35 @@ var Agent = function (actions, states, discount_rate, acceptable_error) {
     value: 1.0 / this.states.length,
     count: 0
   };
-  this.$probabilities = [];
-  this.states.forEach(function (state_a) {
-    this.$probabilities[state_a] = [];
-    this.actions.forEach(function (action_a) {
-      this.$probabilities[state_a][action_a] = [];
-      this.states.forEach(function (state_b) {
-        this.$probabilities[state_a][action_a][state_b] = initial_probability;
-      });
-    });
-  });
+  this.$probabilities = {};
+  for (var i=0; i<this.states.length; ++i) {
+    this.$probabilities[this.states[i]] = [];
+    for (var j=0; j<this.actions.length; ++j) {
+      this.$probabilities[this.states[i]][this.actions[j]] = [];
+      for (var k=0; k<this.states.length; ++k) {
+        this.$probabilities[this.states[i]][this.actions[j]][this.states[k]] = initial_probability;
+      }
+    }
+  }
 
   // Initialize the reward table
   var initial_reward = {
     value: 0,
     count: 0
   };
-  this.$rewards = [];
-  this.states.forEach(function (state_a) {
-    this.$rewards[state_a] = initial_reward;
-  });
+  this.$rewards = {};
+  for(var i=0; i<this.states.length; ++i) {
+    this.$rewards[this.states[i]] = initial_reward;
+  }
 
   // Initialize the value table
   var initial_value = {
     value: 0
   }
-  this.$values = [];
-  this.states.forEach(function (state_a) {
-    this.$values[state_a] = initial_value;
-  });
+  this.$values = {};
+  for(var i=0; i<this.states.length; ++i) {
+    this.$values[this.states[i]] = initial_value;
+  }
 }
 
 

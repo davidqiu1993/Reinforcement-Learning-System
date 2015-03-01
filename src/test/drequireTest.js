@@ -25,6 +25,7 @@ describe('drequire', function() {
 
   // TEST: Existence of agent module
   it('should have agent module', function () {
+    drequire('Agent').should.be.ok;
     drequire('agent').should.be.ok;
   });
 

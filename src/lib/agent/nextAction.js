@@ -60,10 +60,12 @@ nextAction = function (
   // Update probability distributions
   P[s_prev][a_prev][s_cur].count++;
   var total_count = 0;
-  S.forEach(function (s) { total_count += P[s_prev][a_prev][s].count; });
-  S.forEach(function (s) {
-    P[s_prev][a_prev][s].value = P[s_prev][a_prev][s].count / total_count;
-  });
+  for (var i=0; i<S.length; ++i) {
+    total_count += P[s_prev][a_prev][S[i]].count;
+  }
+  for (var i=0; i<S.length; ++i) {
+    P[s_prev][a_prev][S[i]].value = P[s_prev][a_prev][S[i]].count / total_count;
+  }
 
   // Update reward function
   R[s_cur].count++;
@@ -73,20 +75,20 @@ nextAction = function (
   var max_error = e + 1;
   while (max_error > e) {
     max_error = 0;
-    S.forEach(function (s) {
+    for (var i=0; i<S.length; ++i) {
       // Compute the next value of the state
-      var next_v = R[s] + g * maths.make_max(A, function (a) {
+      var next_v = R[S[i]] + g * maths.make_max(A, function (a) {
         return maths.sum(S, function (s2) {
-          return (P[s][a][s2].value * V[s2].value);
+          return (P[S[i]][a][s2].value * V[s2].value);
         }).value;
       }).value;
 
       // Check the maximum error
-      max_error = maths.max([ max_error, maths.abs(next_v - V[s].value).value ]).value;
+      max_error = maths.max([ max_error, maths.abs(next_v - V[S[i]].value).value ]).value;
 
       // Update the value of the state
-      V[s].value = next_v;
-    });
+      V[S[i]].value = next_v;
+    }
   }
 
   // Find the next action with the optimal policy
