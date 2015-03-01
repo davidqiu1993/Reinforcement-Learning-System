@@ -22,6 +22,9 @@ var drequire = function (module_name) {
     case 'Agent':        return require('./lib/agent/index');
     case 'agent':        return drequire('Agent');
 
+    // MODULE: apps
+    case 'apps':         return require('./apps/index');
+
     // MODULE: (not found)
     default:               return undefined;
   }

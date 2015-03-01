@@ -10,111 +10,44 @@
 
 drequire = require('./drequire');
 
-var AgentEntity = drequire('Agent');
 var readline = require('readline');
+var apps = drequire('apps');
 
-var app = {};
 var _helper = {};
 
 
-_helper.nextToken = function (str) {
-  var split = ' ';
-  var trimStr = str.trim();
-  var idx = trimStr.indexOf(split);
-  if (idx == -1) {
-    return { token: trimStr, rest: '' };
-  }
-  var token = trimStr.substr(0, idx);
-  var restIdx = idx + split.length;
-  var rest = trimStr.substr(restIdx, trimStr.length - restIdx);
-  return { token: token.trim(), rest: rest.trim() };
+_helper.showHeader = function (name) {
+  var splitLine = '';
+  for (var i=0; i<name.length + 20; ++i) splitLine = splitLine + '=';
+  console.log();
+  console.log(splitLine);
+  console.log('          ' + name + '          ');
+  console.log(splitLine);
+  console.log();
 }
 
 
-app.showAgent = function () {
-  console.log('========== [ Statistics ] ==========');
-  console.log(app.agent);
-  console.log('====================================');
+// Load application
+var cli = readline.createInterface(process.stdin, process.stdout);
+console.log('Applications:');
+for (var app in apps) {
+  console.log('  - ' + app);
 }
-
-
-app.next = function (paramLine) {
-  var paramCheck = true;
-  var parse_token = _helper.nextToken(paramLine);
-  if (!parse_token.token) paramCheck = false;
-  app.cur_state = parse_token.token;
-  parse_token = _helper.nextToken(parse_token.rest);
-  if (!parse_token.token) paramCheck = false;
-  app.cur_reward = parseFloat(parse_token.token);
-  if (app.cur_reward == NaN) paramCheck = false;
-  if (!paramCheck) {
-    console.log('ERROR: Invalid Parameters');
-    return;
-  }
-
-  // Update the running states
-  app.prev_action = app.agent.next(app.prev_state, app.prev_action, app.cur_state, app.cur_reward);
-  app.prev_state = app.cur_state;
-
-  // Output the action
-  console.log('ACTION "%s"', app.prev_action);
-}
-
-
-app.run = function () {
-  // Initialize the artificial intelligence agent
-  var actions = ['E', 'W', 'N', 'S'];
-  var states  = ['(1,3)', '(2,3)', '(3,3)', '(4,3)',
-                 '(1,2)', '(2,2)', '(3,2)', '(4,2)',
-                 '(1,1)', '(2,1)', '(3,1)', '(4,1)'];
-  var discount_rate    = 0.5;
-  var acceptable_error = 0.05;
-  app.agent = new AgentEntity(actions, states, discount_rate, acceptable_error);
-
-  // Initialize the initial running states
-  app.prev_state  = '(1,1)';
-  app.prev_action = 'E';
-  app.cur_state   = undefined;
-  app.cur_reward  = undefined;
-
-  // Initialize the command line interface
-  var cli = readline.createInterface(process.stdin, process.stdout);
-  cli.setPrompt('>> ');
-
-  // Run the system
-  console.log('>> (1,1) -0.1');
-  console.log('ACTION "%s"', app.prev_action);
-  cli.prompt();
-  cli.on('line', function (line) {
-    // Select command
-    var parse_token = _helper.nextToken(line);
-    switch (parse_token.token) {
-      case 'show':
-        app.showAgent();
-        break;
-
-      case 'next':
-        app.next(parse_token.rest);
-        break;
-
-      case 'exit':
-        process.exit(0);
-        break;
-
-      default:
-        console.log('ERROR: Invalid Command');
-        break;
-    }
-
-    // Prompt for the next input
+console.log();
+cli.setPrompt('LOAD >> ');
+cli.prompt();
+cli.on('line', function (line) {
+  var appName = line.trim();
+  if (apps[appName]) {
+    console.log('Load application:', appName);
+    console.log();
+    _helper.showHeader(appName);
+    cli.close();
+    apps[appName].run();
+  } else {
+    console.log('The application does not exist.');
     cli.prompt();
-  }).on('close', function() {
-    process.exit(0);
-  });
-}
-
-
-// Launch the application
-app.run();
+  }
+});
 
 
