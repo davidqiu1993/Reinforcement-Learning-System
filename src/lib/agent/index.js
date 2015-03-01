@@ -73,38 +73,35 @@ var Agent = function (actions, states, discount_rate, acceptable_error) {
   this.acceptable_error = acceptable_error;
 
   // Initialize the probability distribution table
-  var initial_probability = {
-    value: 1.0 / this.states.length,
-    count: 0
-  };
   this.$probabilities = {};
   for (var i=0; i<this.states.length; ++i) {
     this.$probabilities[this.states[i]] = [];
     for (var j=0; j<this.actions.length; ++j) {
       this.$probabilities[this.states[i]][this.actions[j]] = [];
       for (var k=0; k<this.states.length; ++k) {
-        this.$probabilities[this.states[i]][this.actions[j]][this.states[k]] = initial_probability;
+        this.$probabilities[this.states[i]][this.actions[j]][this.states[k]] = {
+          value: 1.0 / this.states.length,
+          count: 0
+        };
       }
     }
   }
 
   // Initialize the reward table
-  var initial_reward = {
-    value: 0,
-    count: 0
-  };
   this.$rewards = {};
   for(var i=0; i<this.states.length; ++i) {
-    this.$rewards[this.states[i]] = initial_reward;
+    this.$rewards[this.states[i]] = {
+      value: 0,
+      count: 0
+    };
   }
 
   // Initialize the value table
-  var initial_value = {
-    value: 0
-  }
   this.$values = {};
   for(var i=0; i<this.states.length; ++i) {
-    this.$values[this.states[i]] = initial_value;
+    this.$values[this.states[i]] = {
+      value: 0
+    };
   }
 }
 
