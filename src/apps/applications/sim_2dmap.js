@@ -12,6 +12,7 @@
 var AgentEntity = drequire('agent');
 var SimulatorEntity = drequire('simulator-2dmap');
 var readline = require('readline');
+var fs = require('fs');
 
 var app = {};
 var _helper = {};
@@ -133,6 +134,53 @@ app.next = function (paramLine) {
 }
 
 
+app.save = function (paramLine) {
+  // Define general variables
+  var filepath = undefined;
+
+  // Check the arguments
+  var argCheck = true;
+  var parse_token = _helper.nextToken(paramLine);
+  if (!parse_token.token) argCheck = false;
+  else {
+    filepath = parse_token.token;
+  }
+  if (!argCheck) {
+    console.log('ERROR: Invalid Arguments');
+    return;
+  }
+
+  // Inform the file path
+  console.log('file path:', filepath);
+
+  // Check the existence of the file
+  var file_exists = fs.existsSync(filepath);
+  console.log('file exists:', file_exists);
+
+  // Check if the file exists
+  if (!file_exists) {
+    var save_object = {
+      simulator:    app.simulator,
+      agent:        app.agent,
+      prev_state:   app.prev_state,
+      prev_action:  app.prev_action,
+      cur_state:    app.cur_state,
+      cur_reward:   app.cur_reward
+    };
+    fs.writeFileSync(filepath, JSON.stringify(save_object));
+    console.log('file saved:', 'success');
+  } else {
+    console.log('file saved:', 'error');
+  }
+}
+
+
+app.load = function (paramLine) {
+  // TODO
+  throw new Error('TODO');
+}
+
+
 app.run = function () {
   // Initialize the simulator of two-dimensional map simulation
   var map = [
@@ -163,6 +211,8 @@ app.run = function () {
   console.log('Commands:');
   console.log('  - next [-m|--map]');
   console.log('  - show agent|map|pos|position');
+  console.log('  - save <filepath>');
+  console.log('  - load <filepath>');
   console.log('  - exit');
   console.log();
   cli.setPrompt('>> ');
@@ -183,6 +233,14 @@ app.run = function () {
 
       case 'next':
         app.next(parse_token.rest);
+        break;
+
+      case 'save':
+        app.save(parse_token.rest);
+        break;
+
+      case 'load':
+        app.load(parse_token.rest);
         break;
 
       case 'exit':
