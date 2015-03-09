@@ -36,7 +36,7 @@ maths.make_max = function (operands, operator) {
   if (!( typeof(operator) == 'function' || operator instanceof Function )) paramCheck = false;
   if (!paramCheck) {
     var err = new Error('Some of the parameters are invalid.');
-    err.argument = { operands: operands, operator: operator };
+    err.arguments = { operands: operands, operator: operator };
     throw err;
   }
 
@@ -89,7 +89,7 @@ maths.sum = function (operands, operator) {
   if (!( typeof(operator) == 'function' || operator instanceof Function )) paramCheck = false;
   if (!paramCheck) {
     var err = new Error('Some of the parameters are invalid.');
-    err.argument = { operands: operands, operator: operator };
+    err.arguments = { operands: operands, operator: operator };
     throw err;
   }
 
@@ -125,7 +125,7 @@ maths.max = function (operands) {
   }
   if (!paramCheck) {
     var err = new Error('Some of the parameters are invalid.');
-    err.argument = { operands: operands};
+    err.arguments = { operands: operands};
     throw err;
   }
 
@@ -168,7 +168,7 @@ maths.min = function (operands) {
   }
   if (!paramCheck) {
     var err = new Error('Some of the parameters are invalid.');
-    err.argument = { operands: operands};
+    err.arguments = { operands: operands };
     throw err;
   }
 

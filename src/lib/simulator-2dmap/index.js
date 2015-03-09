@@ -103,7 +103,7 @@ _helper.calculateIRDistences = function (map, ir_cap, pos_x, pos_y) {
   for (var ir_mapping=0; ir_mapping<4; ++ir_mapping) {
     var ir_pos_x = pos_x;
     var ir_pos_y = pos_y;
-    var increment_count = 0;
+    var increment_count = -1;
     while (true) {
       // Increase the direction index
       ++increment_count;
@@ -123,20 +123,20 @@ _helper.calculateIRDistences = function (map, ir_cap, pos_x, pos_y) {
       if (!( 0 <= ir_pos_y && ir_pos_y < map_size.height )) break;
 
       // Detect obstacle
-      if (!( map[ir_pos_x][ir_pos_y] == 'X' )) break;
+      if (map[ir_pos_x][ir_pos_y] == 'X') break;
       else if (!( map[ir_pos_x][ir_pos_y] == 'O' )) {
         var err = new Error('The map is invalid.');
-        err.arguments = { map: map };
+        err.arguments = { map: map, ir_pos_x: ir_pos_x, ir_pos_y: ir_pos_y };
         throw err;
       }
     }
 
     // Update IR sensor distences
     switch (ir_mapping) {
-      case 0: dist_E = maths.min([increment_count, ir_cap]); break;
-      case 1: dist_S = maths.min([increment_count, ir_cap]); break;
-      case 2: dist_W = maths.min([increment_count, ir_cap]); break;
-      case 3: dist_N = maths.min([increment_count, ir_cap]); break;
+      case 0: dist_E = maths.min([increment_count, ir_cap]).value; break;
+      case 1: dist_S = maths.min([increment_count, ir_cap]).value; break;
+      case 2: dist_W = maths.min([increment_count, ir_cap]).value; break;
+      case 3: dist_N = maths.min([increment_count, ir_cap]).value; break;
       default:
         var err = new Error('The IR sensor mapping is invalid.');
         err.arguments = { ir_mapping: ir_mapping };
@@ -224,10 +224,10 @@ var Simulator = function (map, ir_cap, pos_x, pos_y) {
   this.ir_cap = ir_cap;
   this.actions = ['E', 'W', 'S', 'N'];
   this.states = [];
-  for (var i=1; i<=ir_cap; ++i) {
-    for (var j=1; j<=ir_cap; ++j) {
-      for (var k=1; k<=ir_cap; ++k) {
-        for (var l=1; l<=ir_cap; ++l) {
+  for (var i=0; i<=ir_cap; ++i) {
+    for (var j=0; j<=ir_cap; ++j) {
+      for (var k=0; k<=ir_cap; ++k) {
+        for (var l=0; l<=ir_cap; ++l) {
           this.states.push(_helper.convertIRToState(i, j, k, l));
         }
       }
@@ -330,10 +330,10 @@ var Simulator = function (map, ir_cap, pos_x, pos_y) {
     var next_pos_x = tf_pos_x;
     var next_pos_y = tf_pos_y;
     switch (action_mapping) {
-      case '0': ++next_pos_x; break;
-      case '1': --next_pos_y; break;
-      case '2': --next_pos_x; break;
-      case '3': ++next_pos_y; break;
+      case 0: ++next_pos_x; break;
+      case 1: --next_pos_y; break;
+      case 2: --next_pos_x; break;
+      case 3: ++next_pos_y; break;
       default:
         var err = new Error('The action mapping is invalid.');
         err.arguments = { action_mapping: action_mapping };
@@ -346,8 +346,15 @@ var Simulator = function (map, ir_cap, pos_x, pos_y) {
     if (!( 0 <= next_pos_y && next_pos_y < tf_map_size.height )) detectBoundary = false;
 
     // Detect obstacle collision
-    var detectCollision = true;
-    if (!( tf_map[next_pos_x][next_pos_y] == 'O' )) detectCollision = false;
+    if (detectBoundary) {
+      var detectCollision = true;
+      if (tf_map[next_pos_x][next_pos_y] == 'X') detectCollision = false;
+      else if (!( tf_map[next_pos_x][next_pos_y] == 'O' )) {
+        var err = new Error('The map is invalid.');
+        err.arguments = { tf_map: tf_map, next_pos_x: next_pos_x, next_pos_y: next_pos_y };
+        throw err;
+      }
+    }
 
     // Check detection and return the transition result
     var transition_result = {
@@ -442,10 +449,10 @@ var Simulator = function (map, ir_cap, pos_x, pos_y) {
       ir_distences.dist_S,
       ir_distences.dist_W,
       ir_distences.dist_N
-    ]);
+    ]).value;
 
     // Return the reward
-    return min_ir_distence;
+    return (min_ir_distence - rf_ir_cap);
   }
 }
 
@@ -479,6 +486,28 @@ Simulator.prototype.getState = function () {
 
 
 /**
+ * @param action The action token to reach the current state.
+ * @return The reward of the current status.
+ *
+ * @brief
+ *    Get the reward of the current status.
+ */
+Simulator.prototype.getReward = function (action) {
+  // Calculate the reward result
+  var reward_result = this.reward(
+    this.map,
+    this.ir_cap,
+    this.pos_x,
+    this.pos_y,
+    action
+  );
+
+  // Return the reward
+  return reward_result;
+}
+
+
+/**
  * @param action The action of the transition.
  * @return The next state and reward after the transition of the simulation 
  *         in the form "{ state, result }".
@@ -489,6 +518,7 @@ Simulator.prototype.getState = function () {
  */
 Simulator.prototype.next = function (action) {
   // Check the parameters
+  var paramCheck = true;
   if (!( action == 'E' || action == 'W' || action == 'S' || action == 'N' )) {
     paramCheck = false;
   }

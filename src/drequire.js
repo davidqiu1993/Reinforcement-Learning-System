@@ -10,19 +10,21 @@
 
 var drequire = function (module_name) {
   switch (module_name) {
-    // MODULE: mathematics
+    // MODULE: Mathematics
     case 'maths':        return require('./lib/maths/index');
     case 'mathematics':  return drequire('maths');
     case 'math':         return drequire('maths');
 
-    // MODULE: algorithms
+    // MODULE: Algorithms
     case 'algorithms':   return require('./lib/algorithms/index');
 
     // MODULE: Agent
-    case 'Agent':        return require('./lib/agent/index');
-    case 'agent':        return drequire('Agent');
+    case 'agent':        return require('./lib/agent/index');
 
-    // MODULE: apps
+    // MODULE: Simulator of two dimensional map simulation
+    case 'simulator-2dmap': return require('./lib/simulator-2dmap/index');
+
+    // MODULE: Applications
     case 'apps':         return require('./apps/index');
 
     // MODULE: (not found)

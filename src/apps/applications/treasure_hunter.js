@@ -8,7 +8,7 @@
  * Copyright (C) 2015, David Qiu. All rights reserved.
  */
 
-var AgentEntity = drequire('Agent');
+var AgentEntity = drequire('agent');
 var readline = require('readline');
 
 var app = {};
