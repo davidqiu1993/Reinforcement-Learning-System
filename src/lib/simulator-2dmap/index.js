@@ -32,6 +32,7 @@ _helper.convertIRToState = function (dist_E, dist_S, dist_W, dist_N) {
   return stateString;
 }
 
+
 /**
  * @param map The two-dimensional array indicating the map of simulation.
  * @param ir_cap The capability of the IR sensors.

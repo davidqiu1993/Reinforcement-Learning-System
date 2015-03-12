@@ -19,7 +19,7 @@ var appList = JSON.parse(fs.readFileSync(path.join(__dirname, 'apps.json')));
 
 // Load the applications
 for (var i=0; i<appList.length; ++i) {
-  apps[appList[i]] = require('./applications/' + appList[i]);
+  apps[appList[i]] = require('./applications/' + appList[i] + '/index');
 }
 
 

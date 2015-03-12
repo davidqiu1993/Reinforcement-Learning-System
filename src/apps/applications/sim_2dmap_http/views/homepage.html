@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Reinforcement Learning Simulation</title>
+    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/homepage.css">
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">2dmap</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/">Simulation</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+        <!-- Simulation Area -->
+        <div id="sim" class="col-md-8">
+          <h2 class="sub-header">Simulator</h2>
+        </div>
+        <div class="col-md-4">
+          <!-- Control Area -->
+          <div id="control">
+            <h2 class="sub-header">Control</h2>
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-default" onclick="control.initialize()">Initialize</button>
+              <button type="button" class="btn btn-default" onclick="control.next()">Next</button>
+            </div>
+          </div>
+          <!-- Status Area -->
+          <div id="status">
+            <h2 class="sub-header">Status</h2>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Server</td>
+                  <td id="status-server"></td>
+                </tr>
+                <tr>
+                  <td>Action</td>
+                  <td id="status-action"></td>
+                </tr>
+                <tr>
+                  <td>Position</td>
+                  <td id="status-position"></td>
+                </tr>
+                <tr>
+                  <td>State</td>
+                  <td id="status-state"></td>
+                </tr>
+                <tr>
+                  <td>Reward</td>
+                  <td id="status-reward"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/homepage.js"></script>
+  </body>
+</html>

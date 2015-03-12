@@ -1,4 +1,5 @@
 [
   "treasure_hunter",
-  "sim_2dmap"
+  "sim_2dmap",
+  "sim_2dmap_http"
 ]
