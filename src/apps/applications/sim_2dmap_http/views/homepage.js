@@ -119,6 +119,23 @@ control.next = function () {
     refreshMapView(map_view, map, data.position.x, data.position.y);
   });
 }
+control.auto = false;
+control.autoScript = function () {
+  if (control.auto) {
+    nextState(function (data) {
+      refreshMapView(map_view, map, data.position.x, data.position.y, function () {
+        setTimeout('control.autoScript()', 600);
+      });
+    });
+  }
+}
+control.autoOn = function () {
+  control.auto = true;
+  control.autoScript();
+}
+control.autoOff = function () {
+  control.auto = false;
+}
 
 // Initialize the map view
 refreshMapView(map_view, map, initial_position.x, initial_position.y);
