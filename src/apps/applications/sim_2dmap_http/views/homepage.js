@@ -1,3 +1,7 @@
+// General variables
+var countSteps = 0;
+
+
 // Set block
 var setBlock = function (block, type) {
   block.removeClass('path');
@@ -39,11 +43,13 @@ var initServer = function (map, ir_capability, initial_position, callback) {
     '/simulator',
     JSON.stringify({ map: map, ir_capability: ir_capability, initial_position: initial_position }),
     function (data) {
+      countSteps = 0;
       $('#status-server').text('Ready');
       $('#status-action').text('<N/A>');
       $('#status-position').text('(' + initial_position.x + ',' + initial_position.y + ')');
       $('#status-state').text('<N/A>');
       $('#status-reward').text('<N/A>');
+      $('#count-steps').text(countSteps);
       if (typeof(callback) == 'function' || callback instanceof Function) {
         callback(data);
       }
@@ -58,11 +64,13 @@ var nextState = function (callback) {
   $.get(
     '/next',
     function (data) {
+      ++countSteps;
       $('#status-server').text('Ready');
       $('#status-action').text(data.action);
       $('#status-position').text('(' + data.position.x + ',' + data.position.y + ')');
       $('#status-state').text(data.state);
       $('#status-reward').text(data.reward);
+      $('#count-steps').text(countSteps);
       if (typeof(callback) == 'function' || callback instanceof Function) {
         callback(data);
       }

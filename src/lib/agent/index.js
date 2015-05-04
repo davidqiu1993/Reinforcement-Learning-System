@@ -81,7 +81,7 @@ var Agent = function (actions, states, discount_rate, acceptable_error) {
       for (var k=0; k<this.states.length; ++k) {
         this.$probabilities[this.states[i]][this.actions[j]][this.states[k]] = {
           value: 1.0 / this.states.length,
-          count: 0
+          count: 1
         };
       }
     }

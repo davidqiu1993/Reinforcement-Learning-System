@@ -4,7 +4,13 @@ General reinforcement learning system with artificial intelligence agent and
 environment simulator.
 
 
-# Authorship
+## Installation
+
+
+## Applications
+
+
+## Authorship
 
 Below are authorship information of the project.
 

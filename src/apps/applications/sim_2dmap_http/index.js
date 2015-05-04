@@ -189,6 +189,24 @@ routes.get('/homepage.js', function (req, res) {
 })
 
 
+routes.get('/bootstrap.min.css', function (req, res) {
+  console.log('VIEW    %s', 'bootstrap.min.css');
+  _helper.responseView(req, res, 'bootstrap.min.css');
+})
+
+
+routes.get('/bootstrap.min.js', function (req, res) {
+  console.log('VIEW    %s', 'bootstrap.min.js');
+  _helper.responseView(req, res, 'bootstrap.min.js');
+})
+
+
+routes.get('/jquery.min.js', function (req, res) {
+  console.log('VIEW    %s', 'jquery.min.js');
+  _helper.responseView(req, res, 'jquery.min.js');
+})
+
+
 app.run = function () {
   var server = _helper.createHttpServer(routes);
   server.listen(3000);
